@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mt-5" style="height: 20rem; background-color: #fff;">
+
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-md-6">
+                <span class="text-secondary h6">HUB <span class="text-danger">*</span> </span>
+              <input type="text" class="form-control mt-3" placeholder="hub" value="{{item.hub}}" aria-label="readonly input example" readonly>
+            </div>
+            <div class="col-md-6">
+                <span class="text-secondary h6">GRN</span>
+                {%if item.grn == None%}
+                <input type="text" class="form-control mt-3" value='' aria-label="readonly input example" readonly>
+                {%else%}
+                <input type="text" class="form-control mt-3" placeholder="hub" value='{{item.grn}}' aria-label="readonly input example" readonly>
+                {%endif%}
+            </div>
+          </div>
+          <div class="row  mt-4">
+            <div class="col-md-6">
+                <span class="text-secondary h6">SUPPLIER <span class="text-danger">*</span> </span>
+              <input type="text" class="form-control mt-3" placeholder="supplier" value="{{item.supplier}}" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-6">
+                <span class="text-secondary h6">SUPPLIER NAME</span>
+              <input type="text" class="form-control mt-3" placeholder="supplier_name" value="{{item.supplier_name}}" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+    </div>
+</div>
+<div class="mt-5 pb-3" style="height: max-content; background-color: #fff;">
+
+    <div class="container pt-3">
+        <h class="h5 fw-bold">SKU Summary</h>
+        <p class="text-secondary mt-2">SKU Table</p>
+    </div>
+    <div class="mx-5">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                  <th scope="col"><input type="checkbox" id="skucheck" onclick="checkboxclick('sku')" class="checkbox me-2" />No</th>
+                  <th scope="col">SKU</th>
+                  <th scope="col">SKU Description</th>
+                  <th scope="col">Standard Crate Quantity</th>
+                  <th scope="col">Procured Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in item.sku_table.all %}
+                <tr>
+                  <th scope="row"><input type="checkbox" class="checkbox skuitems me-2" />{{forloop.counter}}</th>
+                  <td>{{i.sku}}</td>
+                  <td>{{i.sku_description}}</td>
+                  <td>{{i.standard_crate_quantity}}</td>
+                  <th>{{procured_quantity}}</th>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+    </div>
+</div>
+<div class="my-5 pb-3" style="height: max-content; background-color: #fff;">
+
+    <div class="container pt-3">
+        <h class="h5 fw-bold">Crate List</h>
+        <p class="text-secondary mt-2">Crate Table</p>
+    </div>
+    <div class="mx-5">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                  <th scope="col"><input type="checkbox" id="cratecheck" onclick="checkboxclick('crate')" class="checkbox me-2" />No</th>
+                  <th scope="col">Crate</th>
+                  <th scope="col">SKU</th>
+                  <th scope="col">Packed Quantity</th>
+                  <th scope="col">Crate Weight</th>
+                  <th scope="col">Is Final Crate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in item.crate_table.all %}
+                <tr>
+                  <th scope="row"><input type="checkbox" class="checkbox crateitems me-2" />{{forloop.counter}}</th>
+                  <td>{{i.crate}}</td>
+                  <td>{{i.sku.sku}}</td>
+                  <td>{{i.packed_quantity}}</td>
+                  <td>{{i.crate_weight}}</td>
+                  <td>
+                    {% if i.is_final_crate == False %}
+                    0
+                    {% else %}
+                    1
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+    </div>
+</div>
+<script>
+  function checkboxclick(stat){
+    value = document.getElementById(`${stat}check`)
+    if(value.checked === true){
+      let items = document.querySelectorAll(`.${stat}items`)
+      items.forEach(data => {
+        data.checked = true
+      })
+    }else{
+      let items = document.querySelectorAll(`.${stat}items`)
+      items.forEach(data => {
+        data.checked = false
+      })
+    }
+  }
+</script>
+{% endblock %}
